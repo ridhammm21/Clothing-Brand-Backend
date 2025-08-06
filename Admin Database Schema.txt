@@ -1,0 +1,88 @@
+Admin Database Schema
+
+🧑‍💼 1. admins (Optional Metadata Table)
+If you want to store extra info only for admins (e.g., permissions, logs), you can create a separate table.
+
+CREATE TABLE admins (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  role VARCHAR(50) DEFAULT 'superadmin', -- e.g. superadmin, product_manager
+  last_login TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+You can also skip this if you just use users.is_admin.
+
+
+📦 2. inventory_logs (Track stock changes)
+Every time stock is updated for a variant (manually or via order), you can log it here for traceability.
+
+CREATE TABLE inventory_logs (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  variant_id INT NOT NULL,
+  changed_by INT,                          -- admin user id
+  quantity_change INT NOT NULL,            -- positive or negative
+  reason VARCHAR(255),                     -- e.g. "order", "restock", "correction"
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (variant_id) REFERENCES product_variants(id),
+  FOREIGN KEY (changed_by) REFERENCES users(id)
+);
+
+
+📊 3. admin_activity_logs (Track actions)
+This keeps track of what your admins are doing (editing products, deleting orders, etc.)
+
+CREATE TABLE admin_activity_logs (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  admin_id INT NOT NULL,
+  action_type VARCHAR(50),        -- e.g. "CREATE_PRODUCT", "DELETE_ORDER"
+  entity_type VARCHAR(50),        -- e.g. "product", "order"
+  entity_id INT,
+  message TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (admin_id) REFERENCES users(id)
+);
+
+
+🧾 4. refund_requests (If you support returns)
+
+CREATE TABLE refund_requests (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  order_id INT NOT NULL,
+  user_id INT NOT NULL,
+  reason TEXT,
+  status VARCHAR(20) DEFAULT 'pending',  -- pending, approved, rejected
+  reviewed_by INT,                       -- admin who handled it
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP,
+  FOREIGN KEY (order_id) REFERENCES orders(id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (reviewed_by) REFERENCES users(id)
+);
+
+
+🛍️ 5. promotions (Manage discount codes / flash sales)
+
+CREATE TABLE promotions (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  code VARCHAR(50) UNIQUE NOT NULL,
+  discount_percent DECIMAL(5,2),       -- e.g. 10.00 for 10%
+  max_uses INT DEFAULT 100,
+  used_count INT DEFAULT 0,
+  expires_at TIMESTAMP,
+  created_by INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (created_by) REFERENCES users(id)
+);
+
+
+📧 6. email_campaigns (Optional: marketing via email)
+
+CREATE TABLE email_campaigns (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  subject VARCHAR(255),
+  content TEXT,
+  sent_by INT,
+  target_segment VARCHAR(100),    -- e.g. "all_users", "inactive_users"
+  sent_at TIMESTAMP,
+  FOREIGN KEY (sent_by) REFERENCES users(id)
+);
