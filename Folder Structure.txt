@@ -1,0 +1,81 @@
+Folder Structure
+
+Frontend
+
+nextjs-frontend/
+├── app/                            # App Router (Next.js 13+)
+│   ├── layout.tsx                  # Main layout wrapper
+│   ├── page.tsx                    # Homepage
+│   ├── products/                   # Product listing & detail
+│   │   ├── page.tsx                # Product list page
+│   │   └── [id]/page.tsx           # Product detail page
+│   ├── cart/page.tsx               # Cart page
+│   ├── checkout/page.tsx           # Checkout page
+│   ├── login/page.tsx              # Login
+│   ├── register/page.tsx           # Register
+│   ├── account/page.tsx            # User profile
+│   └── admin/                      # Admin panel (protected)
+│       ├── dashboard/page.tsx
+│       ├── products/page.tsx
+│       └── orders/page.tsx
+│
+├── components/                     # Reusable components
+│   ├── Navbar.tsx
+│   ├── Footer.tsx
+│   ├── ProductCard.tsx
+│   ├── FiltersSidebar.tsx
+│   ├── SizeSelector.tsx
+│   └── AdminTable.tsx
+│
+├── lib/                            # Utility functions
+│   ├── api.ts                      # Axios client
+│   └── helpers.ts                  # Formatters, etc.
+│
+├── styles/
+│   └── globals.css                 # Tailwind CSS imports
+│
+├── public/                         # Static assets (images, logos)
+├── tailwind.config.js
+├── tsconfig.json
+├── next.config.js
+└── package.json
+
+
+Backend
+
+node-backend/
+├── src/
+│   ├── controllers/                # Route logic
+│   │   ├── auth.controller.js
+│   │   ├── product.controller.js
+│   │   ├── cart.controller.js
+│   │   ├── order.controller.js
+│   │   └── admin.controller.js
+│
+│   ├── routes/                     # API routes
+│   │   ├── auth.routes.js
+│   │   ├── products.routes.js
+│   │   ├── cart.routes.js
+│   │   ├── orders.routes.js
+│   │   └── admin.routes.js
+│
+│   ├── models/                     # SQL queries & model logic
+│   │   ├── user.model.js
+│   │   ├── product.model.js
+│   │   ├── order.model.js
+│   │   └── ...
+│
+│   ├── middlewares/               # Auth, error handling, logging
+│   │   ├── auth.middleware.js
+│   │   └── error.middleware.js
+│
+│   ├── config/                     # DB config, env variables
+│   │   ├── db.js
+│   │   └── dotenv.js
+│
+│   ├── utils/                      # Helpers, formatters, validators
+│   └── index.js                    # Entry point
+│
+├── .env                            # Env vars (DB, PORT, JWT secret)
+├── package.json
+└── README.md

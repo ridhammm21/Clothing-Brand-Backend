@@ -1,0 +1,13 @@
+# Exclude clothing brand backend and frontend folders
+clothing-brand-backend/
+clothing-brand-frontend/
+
+# Common files to ignore
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
