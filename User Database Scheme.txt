@@ -1,16 +1,48 @@
 User Database Scheme 
-🔑 1. users
-Stores both customer and admin details.
+
+USE clothing_store;
+
+
+1. User
 
 CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   email VARCHAR(100) UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
-  phone VARCHAR(15),
+  phone VARCHAR(15) NULL, -- explicitly allows NULL
   is_admin BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  status ENUM('active','inactive','banned') DEFAULT 'active',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_email (email)
 );
+
+
+2. User Address
+
+CREATE TABLE user_addresses (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  label VARCHAR(50),                  -- Home, Work, etc.
+  full_name VARCHAR(100) NOT NULL,
+  phone VARCHAR(15) NULL,
+  address_line1 VARCHAR(255) NOT NULL,
+  address_line2 VARCHAR(255) NULL,
+  city VARCHAR(100) NOT NULL,
+  state VARCHAR(100) NOT NULL,
+  postal_code VARCHAR(20) NOT NULL,
+  country VARCHAR(100) NOT NULL,      -- Full country name
+  country_code CHAR(2) NOT NULL,      -- ISO 3166-1 alpha-2 code (e.g., US, IN)
+  is_default BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+
+
+
 
 
 🧺 2. products
