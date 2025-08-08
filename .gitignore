@@ -14,7 +14,3 @@ node_modules/
 # OS generated files
 .DS_Store
 Thumbs.db
-
-# Exclude clothing brand backend and frontend folders (if needed)
-# clothing-brand-backend/
-# clothing-brand-frontend/
