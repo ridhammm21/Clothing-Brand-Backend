@@ -15,6 +15,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 
-# Exclude clothing brand backend and frontend folders (if needed)
-# clothing-brand-backend/
-# clothing-brand-frontend/
+# Exclude clothing brand backend and frontend folders
+clothing-brand-backend/
+clothing-brand-frontend/
