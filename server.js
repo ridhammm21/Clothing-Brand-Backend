@@ -3,8 +3,16 @@ const cors = require('cors');
 require('dotenv').config();
 
 const { testConnection } = require('./config/database');
+
 const userRoutes = require('./routes/users');
 const addressRoutes = require('./routes/addresses');
+const productRoutes = require('./routes/products');
+const cartRoutes = require('./routes/cart');
+const categoryRoutes = require('./routes/categories');
+
+const productVariantRoutes = require('./routes/productVariants');
+const productImageRoutes = require('./routes/productImages');
+const genderRoutes = require('./routes/genders');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,8 +41,16 @@ app.use((req, res, next) => {
 testConnection();
 
 // Routes
+
 app.use('/api/users', userRoutes);
 app.use('/api/addresses', addressRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/categories', categoryRoutes);
+
+app.use('/api/product-variants', productVariantRoutes);
+app.use('/api/product-images', productImageRoutes);
+app.use('/api/genders', genderRoutes);
 
 // Test endpoint for debugging
 app.post('/api/test', (req, res) => {
@@ -53,6 +69,10 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     endpoints: {
       users: '/api/users',
+      products: '/api/products',
+      categories: '/api/categories',
+      productVariants: '/api/product-variants',
+      productImages: '/api/product-images',
       auth: {
         register: 'POST /api/users/register',
         login: 'POST /api/users/login'

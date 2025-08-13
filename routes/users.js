@@ -355,7 +355,7 @@ router.put('/change-password', authenticateToken, [
     res.status(500).json({ 
       success: false,
       error: 'Internal server error',
-      message: error.message 
+      message: error.message   
     });
   }
 });
@@ -408,29 +408,6 @@ router.get('/account-summary', authenticateToken, async (req, res) => {
   }
 });
 
-// Deactivate account (soft delete)
-router.put('/deactivate', authenticateToken, async (req, res) => {
-  try {
-    await pool.execute(
-      'UPDATE users SET status = "inactive", updated_at = CURRENT_TIMESTAMP WHERE id = ?',
-      [req.user.id]
-    );
 
-    console.log('Account deactivated for user:', req.user.id);
-
-    res.json({ 
-      success: true,
-      message: 'Account deactivated successfully' 
-    });
-
-  } catch (error) {
-    console.error('Account deactivation error:', error);
-    res.status(500).json({ 
-      success: false,
-      error: 'Internal server error',
-      message: error.message 
-    });
-  }
-});
 
 module.exports = router;
